@@ -1,0 +1,36 @@
+Test the serialization results of several different structures in Starknet.
+
+Environment:
+```
+Protostar version: 0.13.0                                                                                                              
+Cairo-lang version: 0.11.1.1
+Cairo 1 compiler version: 1.1.0
+```
+
+The main test is to generate an object and store it in storage, and then read it out to see if the result is correct. 
+
+1. FeltObj
+
+Cannot be read properly, error reported, suspected to be related to u8 attribute
+
+```
+Execution was reverted; failure reason: [0x53746f726167654163636573735538202d206e6f6e207538].
+```
+
+0x53746f726167654163636573735538202d206e6f6e207538 means `StorageAccessU8 - non u8`
+
+2. FeltNou8Obj
+
+After changing the u8 property in the object to u32, it can be read, but when there is a felt252 type in the object property, all the property values read are the values of the last field when the object was serialized
+
+```
+[ "3421494", "3421494", "3421494", "3421494" ]
+```
+
+3. NoFeltObj
+
+After removing the felt252 attribute, it can be read normally with or without the u8 type attribute
+
+```
+
+```
